@@ -10,11 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//
 //Route::get('/', function () {
-//    return view('welcome');
+//    return view('form');
 //});
 
-Route::get('/',function (){
-    return view('form');
-});
+
+Route::get('/','TaskController@index');
+Route::post('/create','TaskController@createLecturer');
