@@ -22,8 +22,8 @@ class CreateLecturersTable extends Migration
             $table->string('address');
             $table->string('nationality');
             $table->date('DOB');
-            $table->integer('faculty');
-            $table->integer('modules');
+            $table->string('faculty');
+            $table->string('modules');
             $table->timestamps();
         });
     }

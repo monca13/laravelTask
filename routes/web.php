@@ -18,3 +18,5 @@
 
 Route::get('/','TaskController@index');
 Route::post('/create','TaskController@createLecturer');
+Route::get('/view','TaskController@viewDetail');
+Route::get('/ajax/show/{id}','TaskController@getModule');
