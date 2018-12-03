@@ -7,19 +7,21 @@ use Illuminate\Http\Request;
 use App\Faculty;
 use App\Module;
 use Validation;
+use DB;
 
 class TaskController extends Controller
 {
-    //
+    //faculty selection in dropdown
     public function index(){
         $faculty = Faculty::all();
         return view('form')->with(compact('faculty'));
     }
 
-
+    //create function for lecturer table
     public function createLecturer(Request $request){
+        //validation
         $request->validate([
-            'lname' => 'required|min:5|alpha',
+            'lname' => 'required|min:5',
             'gender' => 'required',
             'phone' => 'required',
             'email' => 'required|email',
@@ -40,7 +42,7 @@ class TaskController extends Controller
         $obj->faculty = $request->input('faculty');
         if (!empty($request->input('module')))
         {
-            $modules = $request->input('module');
+            $modules = $request->input('module'); //inserting multiple datas
             foreach($modules as $module)
             {
                 $array[] = $module;
@@ -48,13 +50,17 @@ class TaskController extends Controller
             $obj->modules = implode('|', $array);
         }
         $obj->save();
+        return redirect('/view')->with('success','Lecturers were added');
     }
 
+    //show detail after inserting data
     public function viewDetail(){
-        $view = lecturer::all();
+        $view = Lecturer::with('module','faculty')->get();
+//        $view = DB::select("SELECT l.*,f.faculty,m.modules FROM lecturers l left JOIN faculties f on l.faculty=f.id left JOIN modules m on l.modules=m.id;");
         return view('view')->with(compact('view'));
     }
 
+    //for json data conversion
     public function getModule($id)
     {
         $module = Module::where('faculty_id','=',$id)->get();
